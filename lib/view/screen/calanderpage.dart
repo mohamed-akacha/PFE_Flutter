@@ -17,19 +17,19 @@ class CalanderPage extends StatelessWidget {
       builder: (controller) {
         return WillPopScope(
           onWillPop: alertExitApp,
-          child: HandlingDataRequest(
+          child: HandlingDataView(
             statusRequest: controller.statusRequest,
             widget: Scaffold(
               appBar: AppBar(
 
                 centerTitle: true,
-                backgroundColor: AppColor.primaryColor,
+                backgroundColor: AppColor.secoundColor,
                 elevation: 0.0,
                 title: Text('My Calendar',
                     style: Theme.of(context)
                         .textTheme
                         .headlineLarge!
-                        .copyWith(color: AppColor.secoundColor)),
+                        .copyWith(color: AppColor.white)),
               ),
               body: SafeArea(
                 child: Column(
@@ -51,47 +51,62 @@ class CalanderPage extends StatelessWidget {
                             final appointment = controller.selectedAppointments[index];
                             return Container(
                               padding: const EdgeInsets.all(2),
-                              height: 60,
                               color: appointment.color,
-                              child: ListTile(
+                              child: InkWell(
                                 onTap: () => controller.goToInspectionDetailsPage(index),
-                                leading: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
-                                    Text(
-                                      DateFormat('yyyy-MM-dd').format(appointment.startTime),
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.w600,
-                                        color: Colors.white,
+                                    Expanded(
+                                      flex: 2,
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            DateFormat('yyyy-MM-dd').format(appointment.startTime),
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.w600,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                          if (appointment.notes != null)
+                                            Text(
+                                              appointment.notes!,
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.w400,
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                        ],
                                       ),
                                     ),
-                                    if (appointment.notes != null)
-                                      Text(
-                                        appointment.notes!,
+                                    Expanded(
+                                      flex: 3,
+                                      child: Text(
+                                        appointment.subject,
                                         style: TextStyle(
-                                          fontWeight: FontWeight.w400,
+                                          fontWeight: FontWeight.w600,
                                           color: Colors.white,
                                         ),
                                       ),
+                                    ),
+                                    Expanded(
+                                      flex: 1,
+                                      child: Icon(
+                                        controller.getIcon(appointment.color == Colors.green),
+                                        size: 30,
+                                        color: Colors.white,
+                                      ),
+                                    ),
                                   ],
-                                ),
-                                title: Text(
-                                  appointment.subject,
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w600,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                                trailing: Icon(
-                                  controller.getIcon(appointment.color == Colors.green),
-                                  size: 30,
-                                  color: Colors.white,
                                 ),
                               ),
                             );
                           },
                           separatorBuilder: (context, index) => const Divider(height: 5),
                         ),
+
                       ),
                     ),
                   ],
