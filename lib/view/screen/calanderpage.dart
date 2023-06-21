@@ -23,7 +23,7 @@ class CalanderPage extends StatelessWidget {
               appBar: AppBar(
 
                 centerTitle: true,
-                backgroundColor: AppColor.secoundColor,
+                backgroundColor: AppColor.primaryColor,
                 elevation: 0.0,
                 title: Text('My Calendar',
                     style: Theme.of(context)
@@ -39,6 +39,7 @@ class CalanderPage extends StatelessWidget {
                         view: CalendarView.month,
                         dataSource: controller.dataSource,
                         onSelectionChanged: controller.selectionChanged,
+                        //initialSelectedDate: controller.selectDate,
                       ),
                     ),
                     Expanded(

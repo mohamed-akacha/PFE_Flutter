@@ -6,7 +6,7 @@ class UnitInspection {
   final int id;
   final String nom;
   final String code;
-  final Institution institution;
+  final Institution? institution;
   final List<Inspection>? inspections;
   final List<Bloc>? blocs;
 
@@ -14,7 +14,7 @@ class UnitInspection {
     required this.id,
     required this.nom,
     required this.code,
-    required this.institution,
+    this.institution,
     this.inspections,
     this.blocs,
   });
@@ -30,9 +30,10 @@ class UnitInspection {
       id: json['id'],
       nom: json['nom'],
       code: json['code'],
-      institution: Institution.fromJson(json['institution']),
+      institution: json['institution'] != null ? Institution.fromJson(json['institution']) : null,  // assign `null` to `institution` if `json['institution']` is null
       inspections: inspectionsList,
       blocs: blocsList,
     );
   }
 }
+

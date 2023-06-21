@@ -12,7 +12,7 @@ class Institution {
     required this.nom,
     required this.adresse,
     required this.nature,
-    required this.unitInspections,
+     this.unitInspections,
   });
 
   factory Institution.fromJson(Map<String, dynamic> json) {

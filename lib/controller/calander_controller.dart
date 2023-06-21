@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pfe_flutter/controller/inspectiondetails_controller.dart';
@@ -10,12 +8,13 @@ import 'package:pfe_flutter/data/model/inspection.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 class CalanderController extends GetxController {
-  CalendarData calendarData = CalendarData();
+  CalendarData calendarData = CalendarData(Get.find());
   List<Inspection> inspections = [];
-  MeetingDataSource dataSource = MeetingDataSource([]);
-  List<Appointment> selectedAppointments = []; // New property
+  //DateTime selectDate = DateTime.now();
 
-  // Ajouter StatusRequest
+  MeetingDataSource dataSource = MeetingDataSource([]);
+  List<Appointment> selectedAppointments = [];
+
   StatusRequest statusRequest = StatusRequest.none;
 
   @override
@@ -29,29 +28,33 @@ class CalanderController extends GetxController {
     update();
 
     final response = await calendarData.getInspections();
-    print("********************************");
-    print(response);
 
-    if (response is StatusRequest) {
-      statusRequest = response;
-    } else {
-      inspections = response as List<Inspection>;  // Here we cast the response to List<Inspection>
+    response.fold((status) {   // Handling StatusRequest
+      statusRequest = status;
+      if (status == StatusRequest.invalidToken) {
+        // Si le token est invalide, rediriger vers la page de connexion
+        Get.offNamed(AppRoute.login);
+      } else {
+        update();
+      }
+      }, (inspectionList) {   // Handling List<Inspection>
+      inspections = inspectionList;
       var appointments = inspections.map((inspection) {
         return Appointment(
-          startTime: inspection.datePrevue,
-          endTime: inspection.dateInspection ?? inspection.datePrevue.add(Duration(hours: 1)),
-          subject: inspection.unit.institution.nom,
-          color: inspection.statut ? Colors.green : Colors.red,
-          startTimeZone: '',
-          endTimeZone: '',
-          notes: inspection.type,
-          id: inspection.id
+            startTime: inspection.datePrevue,
+            endTime:  inspection.datePrevue.add(Duration(hours: 1)),
+            subject: inspection.unit!.institution!.nom,
+            color: inspection.statut ? Colors.green : Colors.red,
+            startTimeZone: '',
+            endTimeZone: '',
+            notes: inspection.type,
+            id: inspection.id
         );
       }).toList();
       dataSource = MeetingDataSource(appointments);
       statusRequest = StatusRequest.success;
-    }
-    update();
+      update();
+    });
   }
 
 
@@ -92,7 +95,6 @@ class CalanderController extends GetxController {
 
 
 }
-
 
 class MeetingDataSource extends CalendarDataSource {
   MeetingDataSource(List<Appointment> source) {

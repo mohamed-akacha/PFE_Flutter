@@ -17,7 +17,7 @@ class LoginControllerImp extends LoginController {
   LoginData loginData = LoginData(Get.find());
   MyServices myServices = Get.find() ;
   GlobalKey<FormState> formstate = GlobalKey<FormState>();
-
+   String? deviceToken ;
   late TextEditingController email;
   late TextEditingController password;
 
@@ -35,7 +35,7 @@ class LoginControllerImp extends LoginController {
     if (formstate.currentState!.validate()) {
       statusRequest = StatusRequest.loading;
       update();
-      final response = await loginData.postdata(email.text, password.text);
+      final response = await loginData.postdata(email.text, password.text ,this.deviceToken ?? "");
       print("=============================== Controller $response ");
 
       if (response is StatusRequest) {
@@ -53,6 +53,9 @@ class LoginControllerImp extends LoginController {
           case StatusRequest.timeout:
             message = "Server Timeout Occurred"; // add this line
             break;
+          case StatusRequest.unauthorized:
+            message = "Email Or Password Not Correct"; // add this line
+            break;
           default:
             message = "An error occurred";
         }
@@ -64,7 +67,7 @@ class LoginControllerImp extends LoginController {
           var token = response['access_token'];
           myServices.sharedPreferences.setString('token', token);
           myServices.sharedPreferences.setString("step", "2");
-          Get.offNamed(AppRoute.homepage);
+          Get.offAllNamed(AppRoute.homepage);
         } else {
           Get.defaultDialog(title: "Warning", middleText: "Email Or Password Not Correct");
           statusRequest = StatusRequest.failure;
@@ -77,13 +80,11 @@ class LoginControllerImp extends LoginController {
 
 
 
-
-
   @override
   void onInit() {
     FirebaseMessaging.instance.getToken().then((value) {
       print(value);
-      String? token = value;
+       deviceToken = value;
     });
     email = TextEditingController();
     password = TextEditingController();

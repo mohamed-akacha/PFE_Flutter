@@ -1,6 +1,6 @@
 class AppLink {
 
-static const String server = "http://192.168.1.71:3000";
+static const String server = "http://192.168.43.190:3000";
 
 
 // ================================= Auth ========================== //
@@ -15,6 +15,12 @@ static const String checkEmail = "$server/auth/verify-email";
 static const String verifycodeforgetpassword = "$server/auth/verify-email-code";
 static const String resetPassword = "$server/auth/reset-password";
 static const String inspection = "$server/inspections";
+static const String evaluation = "$server/evaluations";
+static const String notifications = "$server/notifications";
+  static const String sendEvaluation = "$server/evaluations";
+
+
+
 
 
 

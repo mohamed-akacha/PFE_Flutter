@@ -9,19 +9,19 @@ class Inspection {
   final DateTime? dateInspection;
   final bool statut;
   final String type;
-  final User user;
-  final UnitInspection unit;
+  final User? user;
+  final UnitInspection? unit;
   final List<Evaluation>? evaluations;
 
   Inspection({
     required this.id,
     required this.description,
     required this.datePrevue,
-    required this.dateInspection,
+    this.dateInspection,
     required this.statut,
     required this.type,
-    required this.user,
-    required this.unit,
+    this.user,
+    this.unit,
     this.evaluations,
   });
 
@@ -38,8 +38,8 @@ class Inspection {
           : null,
       statut: json['statut'],
       type: json['type'],
-      user: User.fromJson(json['user']),
-      unit: UnitInspection.fromJson(json['unit']),
+      user: json['user'] != null ? User.fromJson(json['user']) : null,   // Check if 'user' is not null before processing
+      unit: json['unit'] != null ? UnitInspection.fromJson(json['unit']) : null,   // Check if 'unit' is not null before processing
       evaluations: evalList,
     );
   }

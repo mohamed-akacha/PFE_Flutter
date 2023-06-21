@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pfe_flutter/controller/settings_controller.dart';
 
 import '../../core/constant/routes.dart';
 import '../../core/localization/changelocal.dart';
@@ -25,14 +26,24 @@ class Language extends GetView<LocaleController> {
                   onPressed: () {
                     controller.changeLang("ar");
                     myServices.sharedPreferences.setString("step", "1");
-                    Get.toNamed(AppRoute.login) ;
+                    if (Get.isRegistered<SettingsController>()) {
+                     Get.back();
+                    }
+                    else {
+                      Get.toNamed(AppRoute.login);
+                    }
                   }),
               CustomButtonLang(
                   textbutton: "En",
                   onPressed: () {
                     controller.changeLang("en");
                     myServices.sharedPreferences.setString("step", "1");
-                    Get.toNamed(AppRoute.login) ;
+                    if (Get.isRegistered<SettingsController>()) {
+                      Get.back();
+                    }
+                    else {
+                      Get.toNamed(AppRoute.login);
+                    }
                   }),
             ],
           )),

@@ -47,6 +47,11 @@ dependencies:
   jwt_decode: ^0.3.1
   syncfusion_flutter_calendar: ^21.2.4
   connectivity_plus: ^4.0.0
+  jiffy: ^6.1.0
+  flutter_ringtone_player: ^3.2.0
+  flutter_rating_bar: ^4.0.1
+  file_picker: ^5.3.1
+  firebase_storage: ^11.2.2
 
 dev_dependencies:
   flutter_test:

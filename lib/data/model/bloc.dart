@@ -6,7 +6,7 @@ class Bloc {
   final String code;
   final String nom;
   final int etage;
-  final UnitInspection unit;
+  final UnitInspection? unit;
   final List<Evaluation>? evaluations;
 
   Bloc({
@@ -14,21 +14,24 @@ class Bloc {
     required this.code,
     required this.nom,
     required this.etage,
-    required this.unit,
+    this.unit,
     this.evaluations,
   });
 
   factory Bloc.fromJson(Map<String, dynamic> json) {
     var evaluationsJson = json['evaluations'] as List?;
-    var evaluationsList = evaluationsJson?.map((i) => Evaluation.fromJson(i)).toList();
+    var evaluationsList = evaluationsJson != null
+        ? evaluationsJson.map((i) => Evaluation.fromJson(i)).toList()
+        : null;
 
     return Bloc(
       id: json['id'],
       code: json['code'],
       nom: json['nom'],
       etage: json['etage'],
-      unit: UnitInspection.fromJson(json['unit']),
+      unit: json['unit'] != null ? UnitInspection.fromJson(json['unit']) : null,
       evaluations: evaluationsList,
     );
   }
 }
+

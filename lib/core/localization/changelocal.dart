@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pfe_flutter/core/functions/fcmconfig.dart';
 
 import '../constant/apptheme.dart';
 import '../services/services.dart';
@@ -21,6 +22,8 @@ class LocaleController extends GetxController {
 
   @override
   void onInit() {
+    requestPermissionNotification() ;
+    fcmconfig();
     String? sharedPrefLang = myServices.sharedPreferences.getString("lang");
     if (sharedPrefLang == "ar") {
       language = const Locale("ar");

@@ -15,7 +15,7 @@ class VerifyCodeSignUpControllerImp extends VerifyCodeSignUpController {
 
   @override
   goToSuccessSignUp() {
-    Get.offNamed(AppRoute.successSignUp);
+    //Get.offNamed(AppRoute.successSignUp);
   }
 
 

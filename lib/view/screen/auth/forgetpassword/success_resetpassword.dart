@@ -43,6 +43,7 @@ class SuccessResetPassword extends StatelessWidget {
             width: double.infinity,
             child: CustomButtomAuth(
                 text: "31".tr,
+                color: AppColor.primaryColor,
                 onPressed: () {
                   controller.goToPageLogin();
                 }),

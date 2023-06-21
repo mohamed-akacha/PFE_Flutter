@@ -1,5 +1,9 @@
+import 'dart:async';
+
+import 'package:dartz/dartz.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:pfe_flutter/core/class/crud.dart';
 import 'package:pfe_flutter/core/class/statusrequest.dart';
 import 'package:pfe_flutter/core/services/services.dart';
 import 'dart:convert';
@@ -7,34 +11,39 @@ import 'package:pfe_flutter/data/model/inspection.dart';
 import 'package:pfe_flutter/linkapi.dart';
 
 class CalendarData {
-  var client = http.Client();
-  final String apiUrl = AppLink.inspection;
+  final Crud crud;
+  CalendarData(this.crud);
   final MyServices myServices = Get.find();
 
-  Future<dynamic> getInspections() async {
+  Future<Either<StatusRequest, List<Inspection>>> getInspections() async {
     final token = myServices.sharedPreferences.getString('token');
-    try {
-      var response = await client.get( Uri.parse(apiUrl),
+
+    if (token == null) {
+      return Left(StatusRequest.invalidToken);
+    }
+    var response = await crud.getData(AppLink.inspection,
         headers: {
           'Authorization': 'Bearer $token',
-        },
-      );
+        });
 
-      if (response.statusCode == 200 || response.statusCode == 201) {
-        var jsonString = response.body;
-        List jsonList = json.decode(jsonString);  // Ensure that the json is a List type
-
-        return jsonList.map<Inspection>((inspection) => Inspection.fromJson(inspection)).toList();
+    return response.fold((statusRequest) {
+      // En cas d'erreur, nous retournons le StatusRequest correspondant
+      return Left(statusRequest);
+    }, (data) {
+      // En cas de succès, nous transformons les données en une liste d'Inspection
+      if (data is List) {
+        List<Inspection> inspections = (data as List).map<Inspection>((inspectionJson) => Inspection.fromJson(inspectionJson as Map<String, dynamic>)).toList();
+        return Right(inspections);
       } else {
-        // Here we can return StatusRequest.failure or a more specific status depending on the error
-        return StatusRequest.serverfailure;
+        // Si les données ne sont pas une liste, nous retournons une erreur
+        return Left(StatusRequest.serverfailure);
       }
-    } catch (e) {
-      print(e);
-      // Here we return a status in case of any error
-      return StatusRequest.failure;
-    }
+
+    });
   }
+
 }
+
+
 
 

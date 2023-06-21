@@ -65,6 +65,7 @@ class ResetPassword extends StatelessWidget {
                     ),
                     CustomButtomAuth(
                         text: "33".tr,
+                        color: AppColor.primaryColor,
                         onPressed: () {
                           controller.goToSuccessResetPassword();
                         }),

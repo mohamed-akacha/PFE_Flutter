@@ -8,7 +8,7 @@ class MyServices extends GetxService {
   late SharedPreferences sharedPreferences ; 
 
   Future<MyServices> init() async {
-    await Firebase.initializeApp();
+  await Firebase.initializeApp();
   sharedPreferences =   await SharedPreferences.getInstance() ; 
   return this ; 
   }
@@ -32,7 +32,7 @@ class MyServices extends GetxService {
     String? token = sharedPreferences.getString('token');
     if (token != null) {
       Map<String, dynamic> decodedToken = Jwt.parseJwt(token);
-      print(token);
+      print(decodedToken);
       return decodedToken;
     }
     return null;

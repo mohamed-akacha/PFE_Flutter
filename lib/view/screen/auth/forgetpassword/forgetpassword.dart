@@ -54,6 +54,7 @@ class ForgetPassword extends StatelessWidget {
                     ),
                     CustomButtomAuth(
                         text: "30".tr,
+                        color: AppColor.primaryColor,
                         onPressed: () {
                           controller.checkemail();
                         }),

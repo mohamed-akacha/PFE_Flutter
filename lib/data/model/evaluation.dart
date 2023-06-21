@@ -1,32 +1,25 @@
-import 'package:pfe_flutter/data/model/bloc.dart';
-import 'package:pfe_flutter/data/model/evaluationpoint.dart';
-import 'package:pfe_flutter/data/model/inspection.dart';
-
 class Evaluation {
-  final int id;
-  final int score;
-  final String? pieceJointe;
-  final Inspection inspection;
-  final EvaluationPoint evaluationPoint;
-  final Bloc bloc;
+  final int inspectionId;
+  final int blocId;
+  final int evaluationPointId;
+  late  int score;
+  late  String? pieceJointe;
 
   Evaluation({
-    required this.id,
+    required this.inspectionId,
+    required this.blocId,
+    required this.evaluationPointId,
     required this.score,
-    required this.pieceJointe,
-    required this.inspection,
-    required this.evaluationPoint,
-    required this.bloc,
+    this.pieceJointe,
   });
 
   factory Evaluation.fromJson(Map<String, dynamic> json) {
     return Evaluation(
-      id: json['id'],
+      inspectionId: json['inspectionId'],
+      blocId: json['blocId'],
+      evaluationPointId: json['evaluationPointId'],
       score: json['score'],
-      pieceJointe: json['pieceJointe'],
-      inspection: Inspection.fromJson(json['inspection']),
-      evaluationPoint: EvaluationPoint.fromJson(json['evaluationPoint']),
-      bloc: Bloc.fromJson(json['bloc']),
+      pieceJointe: json.containsKey('pieceJointe') ? json['pieceJointe'] : null,
     );
   }
 }

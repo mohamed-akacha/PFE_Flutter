@@ -86,6 +86,7 @@ class Login extends StatelessWidget {
                       ),
                       CustomButtomAuth(
                           text: "15".tr,
+                          color: AppColor.primaryColor,
                           onPressed: () {
                             controller.login();
                           }),

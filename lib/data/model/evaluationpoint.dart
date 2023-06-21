@@ -15,7 +15,9 @@ class EvaluationPoint {
 
   factory EvaluationPoint.fromJson(Map<String, dynamic> json) {
     var evalListJson = json['evaluations'] as List?;
-    List<Evaluation>? evalList = evalListJson?.map((i) => Evaluation.fromJson(i)).toList();
+    List<Evaluation>? evalList = evalListJson != null
+        ? evalListJson.map((i) => Evaluation.fromJson(i)).toList()
+        : null;
 
     return EvaluationPoint(
       id: json['id'],
