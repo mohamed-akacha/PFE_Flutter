@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get.dart';
 import 'package:jwt_decode/jwt_decode.dart';
@@ -36,6 +38,24 @@ class MyServices extends GetxService {
       return decodedToken;
     }
     return null;
+  }
+
+
+  // Récupère la liste des blocs évalués à partir de SharedPreferences
+  Future<List<int>> getEvaluatedBlocks() async {
+    String? json = sharedPreferences.getString('evaluatedBlocks');
+    if (json != null && json.isNotEmpty) {
+      List<dynamic> list = jsonDecode(json);
+      return list.map((item) => item as int).toList();
+    } else {
+      return [];
+    }
+  }
+
+  // Enregistre la liste des blocs évalués dans SharedPreferences
+  Future<void> setEvaluatedBlocks(List<int> evaluatedBlocks) async {
+    String json = jsonEncode(evaluatedBlocks);
+    sharedPreferences.setString('evaluatedBlocks', json);
   }
 
 }

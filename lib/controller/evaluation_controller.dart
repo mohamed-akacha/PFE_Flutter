@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:pfe_flutter/core/class/statusrequest.dart';
 import 'package:pfe_flutter/core/constant/routes.dart';
+import 'package:pfe_flutter/core/services/services.dart';
 import 'package:pfe_flutter/data/datasource/remote/evaluationdata.dart';
 import 'package:pfe_flutter/data/model/evaluationdatamodel.dart';
 import 'package:pfe_flutter/data/model/evaluationpoint.dart';
@@ -14,6 +15,8 @@ class EvaluationController extends GetxController {
   StatusRequest statusRequest = StatusRequest.none;
   bool isLoading = false;
 
+  List<int> evaluatedBlocks = [];
+  final MyServices myServices = Get.find();
   EvaluationController({required this.id, this.unit});
 
   @override
@@ -21,7 +24,15 @@ class EvaluationController extends GetxController {
     super.onInit();
     evaluationData = EvaluationData(Get.find());
     fetchEvaluationData();
+    fetchEvaluatedBlocks();
   }
+
+
+  void fetchEvaluatedBlocks() async {
+    evaluatedBlocks = await myServices.getEvaluatedBlocks();
+  }
+
+
 
   void fetchEvaluationData() async {
     isLoading = true;
@@ -54,11 +65,13 @@ class EvaluationController extends GetxController {
 
     // Pass the block id, block name, and the criteria to the EvaluationBlocPage using GetX navigation
     Get.to(() => EvaluationBlocPage(
-      blockId: id,
+      blockId: idBloc,
       blockName: nomBloc,
       inspectionId : idInspection ,
       criteria: criteria,
-    ));
+    )
+
+    );
   }
 
 

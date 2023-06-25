@@ -38,14 +38,15 @@ class EvaluationPage extends StatelessWidget {
                 itemCount: controller.evaluation?.blocks?.length ?? 0,
                 itemBuilder: (context, index) {
                   final block = controller.evaluation!.blocks![index];
-                  final subtitle = "Floor: ${block.etage}                                 Code: ${block.code}";
+                  final subtitle = "Floor: ${block.etage} "; /*Code: ${block.code}" ; */
 
                   return CustomCard(
-                    title: block.nom,
+                    title: "${block.nom} ( ${block.code} ) " ,
                     subtitle: subtitle,
                     iconData: Icons.description,
                     color: AppColor.secoundColor,
-                    onTap: () {
+                    onTap:  controller.evaluatedBlocks.contains(block.id) ? null : () {
+
                       controller.goToEvaluationBloc(
                         block.id,
                         block.nom,

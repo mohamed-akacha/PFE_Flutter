@@ -1,3 +1,8 @@
+import 'package:json_annotation/json_annotation.dart';
+
+part 'evaluation.g.dart';
+
+@JsonSerializable()
 class Evaluation {
   final int inspectionId;
   final int blocId;
@@ -13,13 +18,8 @@ class Evaluation {
     this.pieceJointe,
   });
 
-  factory Evaluation.fromJson(Map<String, dynamic> json) {
-    return Evaluation(
-      inspectionId: json['inspectionId'],
-      blocId: json['blocId'],
-      evaluationPointId: json['evaluationPointId'],
-      score: json['score'],
-      pieceJointe: json.containsKey('pieceJointe') ? json['pieceJointe'] : null,
-    );
-  }
+  factory Evaluation.fromJson(Map<String, dynamic> json) =>
+      _$EvaluationFromJson(json);
+
+  Map<String, dynamic> toJson() => _$EvaluationToJson(this);
 }
